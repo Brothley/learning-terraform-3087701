@@ -30,8 +30,8 @@ resource "aws_instance" "web" {
 }
 
 module "web_sg" {
-  source  = "terrafrom-aws-modules/security-group/aws"
-  version = "4.13.0"
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.3.0"
   name    = "web_new"
 
   vpc_id = data.aws_vpc.default.id
