@@ -24,7 +24,7 @@ module "web_vpc" {
   name = "dev-vpc"
   cidr = "10.0.0.0/16"
 
-  azs             = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  azs = ["us-west-2a", "us-west-2b", "us-west-2c"]
 
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
@@ -55,14 +55,6 @@ module "alb" {
   subnets         = module.web_vpc.public_subnets
   security_groups = [module.web_sg.security_group_id]
 
-  listeners = {
-    ex-http-https-redirect = {
-      port               = 80
-      protocol           = "HTTP"
-      target_group_index = 0
-    }
-  }
-
   target_groups = {
     ex-instance = {
       name_prefix      = "web"
@@ -71,6 +63,16 @@ module "alb" {
       target_type      = "instance"
       target_id        = aws_instance.web.id
     }
+  }
+
+    listeners = {
+    http-tcp-listners = [
+      {
+        port               = 80
+        protocol           = "HTTP"
+        target_group_index = 0
+      }
+    ]
   }
 
   tags = {
